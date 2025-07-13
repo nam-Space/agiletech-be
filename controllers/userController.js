@@ -53,6 +53,8 @@ const loginUser = async (request, response) => {
         response.cookie("refresh_token", refresh_token, {
             httpOnly: true,
             maxAge: ms(process.env.JWT_REFRESH_EXPIRE), //1 day,
+            secure: true,         // Chỉ gửi cookie qua HTTPS (phải bật HTTPS trên backend)
+            sameSite: 'None',     // Để cookie có thể được gửi qua domain khác
         });
 
         response.json({
@@ -140,6 +142,8 @@ const refreshToken = async (request, response) => {
                 response.cookie("refresh_token", refresh_token, {
                     httpOnly: true,
                     maxAge: ms(process.env.JWT_REFRESH_EXPIRE), //1 day,
+                    secure: true,         // Chỉ gửi cookie qua HTTPS (phải bật HTTPS trên backend)
+                    sameSite: 'None',     // Để cookie có thể được gửi qua domain khác
                 });
 
                 const accessToken = jwt.sign(
