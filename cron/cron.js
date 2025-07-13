@@ -2,7 +2,7 @@ const cron = require('cron');
 const https = require('https');
 require('dotenv').config()
 
-const URL = process.env.FRONTEND_URL;
+const URL = process.env.BACKEND_URL;
 
 const job = new cron.CronJob("*/14 * * * *", function () {
     https
