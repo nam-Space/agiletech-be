@@ -138,7 +138,11 @@ const refreshToken = async (request, response) => {
 
                 await updateUserToken(refresh_token, user._id);
 
-                response.clearCookie("refresh_token");
+                response.clearCookie("refresh_token", {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'None',
+                });
                 response.cookie("refresh_token", refresh_token, {
                     httpOnly: true,
                     maxAge: ms(process.env.JWT_REFRESH_EXPIRE), //1 day,
@@ -166,14 +170,22 @@ const refreshToken = async (request, response) => {
                     refresh_token,
                 });
             } else {
-                response.clearCookie("refresh_token");
+                response.clearCookie("refresh_token", {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'None',
+                });
                 response.status(400).send({
                     isError: true,
                     message: "Cannot get user! Maybe server got accident!",
                 });
             }
         } else {
-            response.clearCookie("refresh_token");
+            response.clearCookie("refresh_token", {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'None',
+            });
             response.status(400).send({
                 isError: true,
                 message: "Refresh token is invalid! Maybe something wrong with cookie!",
@@ -200,7 +212,11 @@ const logoutUser = async (request, response) => {
                     $unset: { refresh_token: 1 },
                 },
             );
-            response.clearCookie("refresh_token");
+            response.clearCookie("refresh_token", {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'None',
+            });
             response.send({
                 isError: false,
                 message: "OK!",
